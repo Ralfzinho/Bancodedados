@@ -1,0 +1,147 @@
+📌 Resumo de SQL – Consultas
+SQL (Structured Query Language) é a linguagem usada para consultar, inserir, atualizar
+e excluir dados em bancos de dados relacionais.
+
+🔎 Principais comandos de consulta
+SELECT
+Usado para buscar dados:
+SELECT coluna1, coluna2 FROM tabela;
+
+● * seleciona todas as colunas:
+SELECT * FROM tabela;
+
+WHERE
+Filtra os resultados:
+SELECT * FROM tabela WHERE idade > 18;
+
+AND, OR, NOT
+Combinam condições:
+SELECT * FROM tabela WHERE idade > 18 AND cidade = 'SP';
+
+ORDER BY
+Ordena os resultados:
+SELECT * FROM tabela ORDER BY nome ASC; -- ou DESC
+
+LIMIT
+Limita o número de resultados:
+SELECT * FROM tabela LIMIT 5;
+
+LIKE
+Busca com padrão:
+SELECT * FROM tabela WHERE nome LIKE 'A%'; -- começa com A
+
+IN
+Busca entre valores:
+SELECT * FROM tabela WHERE cidade IN ('SP', 'RJ');
+
+🧮 Funções de agregação
+● COUNT(*) → Conta linhas
+● SUM(coluna) → Soma
+● AVG(coluna) → Média
+● MAX(coluna) / MIN(coluna) → Maior / Menor valor
+
+SELECT COUNT(*) FROM tabela WHERE ativo = 1;
+
+GROUP BY
+Agrupa dados:
+SELECT cidade, COUNT(*) FROM clientes GROUP BY cidade;
+
+HAVING
+Filtra grupos (como WHERE, mas após o GROUP BY):
+SELECT cidade, COUNT(*) FROM clientes GROUP BY cidade HAVING COUNT(*) > 10;
+
+🔗 Joins (junções)
+Usado para combinar dados de mais de uma tabela:
+SELECT *
+FROM pedidos
+JOIN clientes ON pedidos.cliente_id = clientes.id;
+
+Tipos: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN
+
+📊 Funções de Agregação em SQL
+As funções de agregação realizam cálculos em um conjunto de valores e retornam um
+único resultado.
+
+✅ Principais funções:
+Função O que faz Exemplo
+COUNT() Conta o número de linhas SELECT COUNT(*) FROM
+clientes;
+
+SUM(coluna)
+Soma os valores de uma coluna numérica
+SELECT SUM(salario) FROM funcionarios;
+
+AVG(coluna)
+Calcula a média dos valores SELECT AVG(idade) FROM pessoas;
+
+MAX(coluna)
+Retorna o maior valor SELECT MAX(preco) FROM produtos;
+
+MIN(coluna)
+Retorna o menor valor SELECT MIN(nota) FROMalunos;
+
+🔹 Usado com GROUP BY:
+Para agrupar dados antes de aplicar a função:
+SELECT departamento, AVG(salario) FROM funcionarios GROUP BY departamento;
+
+🔸 Usado com HAVING:
+Para filtrar após o agrupamento:
+SELECT cidade, COUNT(*) FROM clientes GROUP BY cidade HAVING COUNT(*) > 10;
+
+🔍 1. SELECT (Consulta básica)
+SELECT nome, idade FROM pessoas;
+Seleciona as colunas nome e idade da tabela pessoas.
+
+🎯 2. WHERE (Filtragem)
+SELECT * FROM produtos WHERE preco > 100;
+Seleciona todos os produtos com preço maior que 100.
+
+🔁 3. AND, OR, NOT (Condicionais)
+SELECT * FROM clientes WHERE cidade = 'SP' AND ativo = 1;
+Clientes de SP que estão ativos.
+SELECT * FROM clientes WHERE idade < 18 OR idade > 60;
+Clientes menores de idade ou idosos.
+SELECT * FROM clientes WHERE NOT ativo = 1;
+Clientes inativos.
+
+📊 4. Funções de agregação (SUM, COUNT, AVG, MAX,MIN)
+SELECT COUNT(*) FROM pedidos;
+Conta quantos pedidos existem.
+
+SELECT AVG(salario) FROM funcionarios;
+Calcula a média dos salários.
+
+SELECT MAX(nota) FROM alunos;
+Retorna a maior nota.
+
+📦 5. GROUP BY (Agrupamento)
+SELECT cidade, COUNT(*) FROM clientes GROUP BY cidade;
+Conta quantos clientes há por cidade.
+
+🧾 6. HAVING (Filtro após agrupamento)
+SELECT cidade, COUNT(*) FROM clientes GROUP BY cidade HAVING COUNT(*) > 10;
+Mostra apenas as cidades com mais de 10 clientes.
+
+📚 7. ORDER BY (Ordenação)
+SELECT nome, idade FROM pessoas ORDER BY idade DESC;
+Lista as pessoas ordenadas pela idade (do mais velho para o mais novo).
+
+🔢 8. LIMIT (Limitar resultados)
+SELECT * FROM produtos LIMIT 5;
+Mostra os 5 primeiros produtos.
+
+🔎 9. LIKE (Busca por padrão)
+SELECT * FROM clientes WHERE nome LIKE 'A%';
+Seleciona clientes cujo nome começa com "A".
+
+📌 10. IN (Busca entre valores)
+SELECT * FROM funcionarios WHERE cargo IN ('Analista', 'Gerente');
+Seleciona funcionários com cargo de Analista ou Gerente.
+
+🔗 11. JOIN (Junção de tabelas)
+INNER JOIN:
+SELECT pedidos.id, clientes.nome FROM pedidos INNER JOIN clientes ON pedidos.cliente_id = clientes.id;
+
+LEFT JOIN:
+SELECT clientes.nome, pedidos.id FROM clientes LEFT JOIN pedidos ON clientes.id = pedidos.cliente_id;
+Clientes com ou sem pedidos.
