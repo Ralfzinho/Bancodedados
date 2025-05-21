@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $papel = $_POST['papel'];
 
     // Verifica se o vínculo já existe
-    $checkSql = "SELECT 1 FROM clientecartao WHERE id_cliente = ? AND id_cartao = ?";
+    $checkSql = "SELECT 1 FROM ClienteCartao WHERE id_cliente = ? AND id_cartao = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $id_cliente, $id_cartao);
     $checkStmt->execute();
@@ -20,19 +20,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagem = "⚠️ Esse vínculo já existe.";
         $erro = true;
     } else {
-        // Insere o vínculo com segurança
-        $insertSql = "INSERT INTO ClienteCartao (id_cliente, id_cartao, papel) VALUES (?, ?, ?)";
-        $insertStmt = $conn->prepare($insertSql);
-        $insertStmt->bind_param("iis", $id_cliente, $id_cartao, $papel);
+        // Verifica se o cartão já possui um titular
+        if ($papel === 'Titular') {
+            $titularCheck = $conn->prepare("SELECT 1 FROM ClienteCartao WHERE id_cartao = ? AND papel = 'Titular'");
+            $titularCheck->bind_param("i", $id_cartao);
+            $titularCheck->execute();
+            $titularCheck->store_result();
 
-        if ($insertStmt->execute()) {
-            $mensagem = "✅ Vínculo inserido com sucesso!";
-        } else {
-            $mensagem = "❌ Erro ao inserir: " . $insertStmt->error;
-            $erro = true;
+            if ($titularCheck->num_rows > 0) {
+                $mensagem = "❌ Esse cartão já possui um titular definido.";
+                $erro = true;
+            }
+
+            $titularCheck->close();
         }
 
-        $insertStmt->close();
+        // Se ainda não houve erro, faz o insert
+        if (!$erro) {
+            $insertSql = "INSERT INTO ClienteCartao (id_cliente, id_cartao, papel) VALUES (?, ?, ?)";
+            $insertStmt = $conn->prepare($insertSql);
+            $insertStmt->bind_param("iis", $id_cliente, $id_cartao, $papel);
+
+            if ($insertStmt->execute()) {
+                $mensagem = "✅ Vínculo inserido com sucesso!";
+            } else {
+                $mensagem = "❌ Erro ao inserir: " . $insertStmt->error;
+                $erro = true;
+            }
+
+            $insertStmt->close();
+        }
     }
 
     $checkStmt->close();

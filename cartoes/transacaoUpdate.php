@@ -12,21 +12,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $descricao = $_POST['descricao'];
     $tipo = $_POST['tipo'];
 
-    // Atualização com prepared statement
-    $sql = "UPDATE Transacao 
-            SET id_cartao = ?, data_transacao = ?, valor = ?, descricao = ?, tipo = ?
-            WHERE id_transacao = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isdssi", $id_cartao, $data, $valor, $descricao, $tipo, $id);
+    // Verifica se o cartão informado existe
+    $check = $conn->prepare("SELECT 1 FROM Cartao WHERE id_cartao = ?");
+    $check->bind_param("i", $id_cartao);
+    $check->execute();
+    $check->store_result();
 
-    if ($stmt->execute()) {
-        $mensagem = "✅ Transação atualizada com sucesso!";
-    } else {
-        $mensagem = "❌ Erro ao atualizar: " . $stmt->error;
+    if ($check->num_rows === 0) {
+        $mensagem = "❌ O cartão informado não existe. Verifique o ID selecionado.";
         $erro = true;
     }
 
-    $stmt->close();
+    $check->close();
+
+    // Só atualiza se o cartão for válido
+    if (!$erro) {
+        $sql = "UPDATE Transacao 
+                SET id_cartao = ?, data_transacao = ?, valor = ?, descricao = ?, tipo = ?
+                WHERE id_transacao = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isdssi", $id_cartao, $data, $valor, $descricao, $tipo, $id);
+
+        if ($stmt->execute()) {
+            $mensagem = "✅ Transação atualizada com sucesso!";
+        } else {
+            $mensagem = "❌ Erro ao atualizar: " . $stmt->error;
+            $erro = true;
+        }
+
+        $stmt->close();
+    }
 }
 ?>
 

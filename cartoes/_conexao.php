@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db = 'cartoes';
+$db = 'sistema_cartoes';
 
 $conn = new mysqli($host, $user, $pass, $db);
 

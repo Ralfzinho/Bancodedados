@@ -1,7 +1,7 @@
 <?php
 include '_conexao.php';
 
-$mensagem = '';
+$mensagem = "";
 $erro = false;
 
 // CREATE – Inserir transação
@@ -12,17 +12,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar_transacao']
     $descricao = $_POST['descricao'];
     $tipo = $_POST['tipo'];
 
-    $stmt = $conn->prepare("INSERT INTO Transacao (id_cartao, data_transacao, valor, descricao, tipo) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("isdss", $id_cartao, $data, $valor, $descricao, $tipo);
+    // Verifica se o cartão existe
+    $check = $conn->prepare("SELECT 1 FROM Cartao WHERE id_cartao = ?");
+    $check->bind_param("i", $id_cartao);
+    $check->execute();
+    $check->store_result();
 
-    if ($stmt->execute()) {
-        $mensagem = "✅ Transação cadastrada com sucesso!";
-    } else {
-        $mensagem = "❌ Erro ao cadastrar: " . $stmt->error;
+    if ($check->num_rows === 0) {
+        $mensagem = "❌ O cartão informado não existe. Verifique a seleção.";
         $erro = true;
     }
 
-    $stmt->close();
+    $check->close();
+
+    // Se cartão for válido, insere
+    if (!$erro) {
+        $stmt = $conn->prepare("
+            INSERT INTO Transacao (id_cartao, data_transacao, valor, descricao, tipo)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("isdss", $id_cartao, $data, $valor, $descricao, $tipo);
+
+        if ($stmt->execute()) {
+            $mensagem = "✅ Transação cadastrada com sucesso!";
+        } else {
+            $mensagem = "❌ Erro ao cadastrar: " . $stmt->error;
+            $erro = true;
+        }
+
+        $stmt->close();
+    }
 }
 
 // READ – Listar transações
@@ -77,7 +96,7 @@ $result = $conn->query("SELECT * FROM Transacao ORDER BY data_transacao DESC");
     </tbody>
   </table>
 
-  <a href="transacaoForm.html" class="btn btn-success">+ Nova Transação</a>
+  <a href="transacaoForm.php" class="btn btn-success">+ Nova Transação</a>
   <a href="index.html" class="btn btn-secondary ms-2">Voltar ao Menu</a>
 
 </div>
