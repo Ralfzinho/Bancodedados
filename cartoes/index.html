@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Gerenciamento de Cartões</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <div class="container py-5">
+    <h1 class="text-center text-primary mb-5">💳 Sistema de Gerenciamento de Cartões</h1>
+
+    <div class="row g-4">
+
+      <!-- Clientes -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">👤 Clientes</h5>
+            <p class="card-text">Gerencie os dados dos clientes cadastrados.</p>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <a href="clienteForm.html" class="btn btn-primary w-100 mb-2">Cadastrar Cliente</a><br>
+              <a href="clienteList.php" class="btn btn-primary w-100 mb-2">Listar Clientes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cartões -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">💳 Cartões</h5>
+            <p class="card-text">Cadastre e visualize cartões de crédito ou débito.</p>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <a href="cartaoForm.html" class="btn btn-primary w-100 mb-2">Cadastrar Cartão</a><br>
+              <a href="cartaoList.php" class="btn btn-primary w-100 mb-2">Listar Cartões</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transações -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">💰 Transações</h5>
+            <p class="card-text">Registre e acompanhe movimentações financeiras.</p>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <a href="transacaoForm.html" class="btn btn-primary w-100 mb-2">Cadastrar Transação</a><br>
+              <a href="transacao.php" class="btn btn-primary w-100 mb-2">Listar Transações</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- Vínculos -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">🔗 Vínculos</h5>
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                <p class="card-text">Associe cartões a clientes como titular ou adicional.</p>
+                <a href="clienteCartaoForm.php" class="btn btn-primary w-100 mb-2">Vincular Cliente a Cartão</a><br>
+                <a href="clienteCartaoList.php" class="btn btn-primary w-100 mb-2">Listar Vínculos</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div>
+      <footer>
+        <hr class="mt-5">
+        <p class="text-center text-muted">Desenvolvido por Ralf 🧠</p>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
